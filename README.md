@@ -39,6 +39,7 @@ Folder Structure -
 3. UpdateLocationField.js - update location using latitude and longitude (lecture code)
 
 To Create index - db.Products.createIndex({location: '2dsphere'})
+Field to store user comments - db.Products.updateMany({}, { $set: { comment: [] } }) 
 
 Note  - 
 
