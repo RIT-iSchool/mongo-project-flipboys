@@ -73,14 +73,15 @@ def display_image(filename):
 def add_comment():
     product_id = request.form['product_id']
     comment = request.form['comment']
-    
+
     db.Products.update_one(
         {'_id': ObjectId(product_id)},
         {'$push': {'comment': comment}}
     )
-    
-    product = db.Products.find_one({'_id': ObjectId(product_id)})
-    return render_template('product_details.html', product=product)
+
+    name = request.form['name']
+
+    return redirect(url_for('product_details', name=name))
 
 # Run the flask server
 if __name__ == '__main__':

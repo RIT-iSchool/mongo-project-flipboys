@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Details</title>
+    <style>
+        body{
+            background-color: aqua;
+        }
+        h1{
+            color: maroon;
+        }
+        .product{
+            width: 400px;
+        }
+        .quit{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .button{
+            font-size: x-large;
+        }
+        .search-link{
+            text-align: center;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Details</h1>
+    <div class="product">
+    {% if product %}
+        <h2>{{ product.product_name }}</h2>
+        <p><strong>Retail Price:</strong> {{ product.retail_price }}</p>
+        <p><strong>Discounted Price:</strong> {{ product.discounted_price }}</p>
+        <p><strong>Description:</strong> {{ product.description }}</p>
+        <p><strong>Product Rating:</strong> {{ product.product_rating }}</p>
+        <p><strong>Brand:</strong> {{ product.brand }}</p>
+        <p><strong>Product Number:</strong> {{ product.product_number }}</p>
+        {% if product.image_present == 'True' %}
+            <p><strong>Product Image:</strong></p>
+            <img src="{{ url_for('display_image', filename=product.product_number) }}" width="400" height="500">
+        {% else %}
+            <p>The product image is not available for this particular product. Displaying the default image.</p>
+            <img src="{{ url_for('display_image', filename='default') }}" alt="Product Image">
+        {% endif %}
+    {% else %}
+        <p>No product found!</p>
+    {% endif %}
+
+    <h3>Comments:</h3>
+    {% if product.comment %}
+        <ul>
+            {% for comment in product.comment %}
+                <li>{{ comment }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No comments yet.</p>
+    {% endif %}
+
+    <form action="{{ url_for('add_comment') }}" method="post">
+        <input type="hidden" name="product_id" value="{{ product._id }}">
+        <input type="hidden" name="name" value="{{ product.product_name }}">
+        <textarea name="comment" placeholder="Enter your comment" required></textarea>
+        <input type="submit" value="Add Comment">
+    </form>
+    </div>
+    <div class="search-link">
+    <a href="{{ url_for('search') }}">Back to Search</a>
+    </div>
+
+    <form class='quit' action="{{ url_for('main_page') }}" method="get">
+        <input class="button" type="submit" value="Quit">
+      </form>
+
+</body>
+</html>

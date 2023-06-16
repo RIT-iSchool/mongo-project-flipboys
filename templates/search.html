@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Products</title>
+  <style>
+    body{
+      background-color: aqua;
+    }
+    .center{
+      text-align: center;
+    }
+    h1{
+      font-size: 60px;
+      color: maroon;
+    }
+    .quit{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .search-form{
+      text-align: center;
+      margin-left: 10px;
+      transform: scale(1.5);
+    }
+    .button{
+      font-size: x-large;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class = "center">Welcome To Flipkart Products Search</h1>
+  
+  <script>
+    function showHideForm() {
+      var searchOption = document.querySelector('input[name="search_option"]:checked');
+      var descriptionForm = document.getElementById('descriptionForm');
+      var geospatialForm = document.getElementById('geospatialForm');
+  
+      if (searchOption && searchOption.value === 'description') {
+        descriptionForm.style.display = 'block';
+        geospatialForm.style.display = 'none';
+      } else if (searchOption && searchOption.value === 'geospatial') {
+        descriptionForm.style.display = 'none';
+        geospatialForm.style.display = 'block';
+      } else {
+        descriptionForm.style.display = 'none';
+        geospatialForm.style.display = 'none';
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      showHideForm();
+      
+      var searchOptions = document.querySelectorAll('input[name="search_option"]');
+      for (var i = 0; i < searchOptions.length; i++) {
+        searchOptions[i].addEventListener('change', showHideForm);
+      }
+    });
+  </script>
+  
+  <form class="search-form" action="{{ url_for('search') }}" method="post">
+    <input type="radio" name="search_option" value="description" id="descriptionOption"> 
+    <label for="descriptionOption">Search by Description</label>
+    <input type="radio" name="search_option" value="geospatial" id="geospatialOption"> 
+    <label for="geospatialOption">Search by Geospatial</label>
+    <br>
+    <br>
+    <div id="descriptionForm">
+      <input type="text" name="description" placeholder="Enter description">
+      <input type="submit" value="Search">
+    </div>
+    <div id="geospatialForm">
+        <input type="number" name="longitude" placeholder="Enter Longitude" min="-180" max="180">
+        <input type="number" name="latitude" placeholder="Enter Latitude" min="-90" max="90">
+        <input type="submit" value="GeoSearch">
+    </div>
+  </form>
+    <br><br>
+  {% if error_message and search_option == 'description' %}
+    <p>{{ error_message }}</p>
+  {% endif %}
+    
+  {% if product_names and search_option == 'description' %}
+    <ul>
+    {% for product_name in product_names %}
+      <li><a href="{{ url_for('product_details', name=product_name) }}">{{ product_name }}</a></li><br>
+    {% endfor %}
+    </ul>
+  {% endif %}
+    
+  {% if error_message and search_option == 'geospatial' %}
+    <p>{{ error_message }}</p>
+  {% endif %}
+    
+  {% if product_names and search_option == 'geospatial' %}
+    <ul>
+    {% for product_name in product_names %}
+      <li><a href="{{ url_for('product_details', name=product_name) }}">{{ product_name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+    
+  <form class='quit' action="{{ url_for('main_page') }}" method="get">
+    <input class="button" type="submit" value="Quit">
+  </form>
+  
+</body>
+</html>
