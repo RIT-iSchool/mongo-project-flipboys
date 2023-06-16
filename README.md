@@ -46,3 +46,5 @@ Note  -
 1. We have kept the search limit to be 20. This can be increased if needed in flipkart.py
 2. Since the location is India, suggested values of latitude and longitude are of places in India eg, [73,16], [81,15], [94,36], etc
    The search area is 100000
+3. We have implemented regex to capture partial words in the description. for eg. 'cot' will show products with whose description
+   has word 'cotton' but not 'boycot' or 'boycott'.
