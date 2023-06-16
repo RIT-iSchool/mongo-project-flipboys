@@ -22,7 +22,7 @@ def search():
     if request.method == 'POST':
         search_option = request.form.get('search_option')
         if search_option == 'description':
-            description = request.form.get('image_name')
+            description = request.form.get('description')
             if not description:
                 return render_template('search.html', error_message='Description not specified for product search', search_option=search_option)
             query = {'description': {'$regex': r'\b' + re.escape(description) + r'\w*', '$options': 'i'}}
@@ -63,7 +63,7 @@ def product_details(name):
 # If image not found, display default flipkart image.
 @app.route('/display_image/<filename>')
 def display_image(filename):
-    filename += '.jpg'
+    filename = './images/' + filename + '.jpg'
     image_file = fs.find_one({'filename': filename})
     image_data = image_file.read()
     return send_file(BytesIO(image_data), mimetype='image/jpg')

@@ -39,3 +39,7 @@ Folder Structure -
 3. UpdateLocationField.js - update location using latitude and longitude (lecture code)
 
 To Create index - db.Products.createIndex({location: '2dsphere'})
+
+Note  - 
+
+1. We have kept the search limit to be 20. This can be increased if needed in flipkart.py
